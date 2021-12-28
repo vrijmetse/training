@@ -6,6 +6,8 @@ import com.pajak.training.entity.User;
 import com.pajak.training.repository.AddressRepository;
 import com.pajak.training.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,11 +38,11 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        User alex = new User(1L, "Alex", 23, "alex@gmail.com");
-        User john = new User(2L, "John", 20, "john@gmail.com");
+        return userRepository.findAll();
+    }
 
-
-        return List.of(alex, john);
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public User save(User user) {
@@ -75,4 +77,15 @@ public class UserService {
         return user;
     }
 
+    public List<User> findUserByAgeGreaterThan(Integer age) {
+        return userRepository.findByAgeGreaterThan(age);
+    }
+
+    public Integer sumAge() {
+        return userRepository.sumAgeForAllUser();
+    }
+
+    public Integer sumAgeV2() {
+        return userRepository.sumAgeForAllUserV2();
+    }
 }

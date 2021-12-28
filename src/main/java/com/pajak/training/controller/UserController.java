@@ -6,6 +6,9 @@ import com.pajak.training.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +44,31 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping(path = "/age/{age}")
+    public List<User> findUserByAgeGreaterThan(@PathVariable Integer age) {
+        return userService.findUserByAgeGreaterThan(age);
+    }
+
+    @GetMapping(path = "/age/sum")
+    public Integer sumAgeForUser() {
+        return userService.sumAge();
+    }
+
+    @GetMapping(path = "/age/sum/v2")
+    public Integer sumAgeForUserV2() {
+        return userService.sumAgeV2();
+    }
+
     @GetMapping(path = "/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping(path = "/all/{pageSize}/{currentPage}")
+    public Page<User> getAllUsers(@PathVariable int pageSize,
+                                  @PathVariable int currentPage) {
+        return userService
+                .getAllUsers(PageRequest.of(currentPage, pageSize));
     }
 
     @PostMapping(path = "/new")
@@ -54,7 +79,7 @@ public class UserController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<User> registrationForm(@RequestBody UserRegistrationForm
-                                                             userRegistrationForm) {
+                                                         userRegistrationForm) {
         User user = userService.registerV2(userRegistrationForm);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }

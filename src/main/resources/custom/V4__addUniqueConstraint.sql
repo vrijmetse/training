@@ -1,0 +1,1 @@
+ALTER TABLE course add unique (COURSE_NAME) 
