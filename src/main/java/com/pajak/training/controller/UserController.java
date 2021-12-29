@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -78,7 +79,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<User> registrationForm(@RequestBody UserRegistrationForm
+    public ResponseEntity<User> registrationForm(@Valid @RequestBody UserRegistrationForm
                                                          userRegistrationForm) {
         User user = userService.registerV2(userRegistrationForm);
         return new ResponseEntity<>(user, HttpStatus.CREATED);

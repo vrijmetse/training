@@ -43,6 +43,11 @@ public class FileStorageService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
+            // TODO : add checking to allow only image files to be uploaded e.g ".jpg" / ".png"
+            if (!fileName.endsWith(".jpg") && !fileName.endsWith(".png")){
+                throw new FileStorageException("Sorry! File extension is not supported " + fileName);
+            }
+
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);

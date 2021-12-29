@@ -1,7 +1,10 @@
 package com.pajak.training.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class UserRegistrationForm {
 
+    @ApiModelProperty(required = true)
     private String name;
     private Integer age;
     private String email;
