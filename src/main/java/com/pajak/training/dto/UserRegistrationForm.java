@@ -12,20 +12,10 @@ public class UserRegistrationForm {
     private Integer rt;
     private Integer rw;
 
-    public UserRegistrationForm(String name,
-                                Integer age,
-                                String email,
-                                String streetName,
-                                Integer postCode,
-                                Integer rt,
-                                Integer rw) {
-        this.name = name;
-        this.age = age;
-        this.email = email;
-        this.streetName = streetName;
-        this.postCode = postCode;
-        this.rt = rt;
-        this.rw = rw;
+    private String roleName;
+
+    public UserRegistrationForm() {
+
     }
 
     public String getName() {
@@ -90,5 +80,13 @@ public class UserRegistrationForm {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
     }
 }

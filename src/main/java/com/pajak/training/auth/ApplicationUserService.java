@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationUserService implements UserDetailsService {
@@ -24,9 +25,15 @@ public class ApplicationUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        User user = userRepository.findByName(username);
+        User user = userRepository.findByEmail(username);
+
+        // transform Set<UserAuthority> ====> Set<SimpleGrantedAuthority>
+        Set<SimpleGrantedAuthority> userAuthorities = user.getAuthorities().stream()
+                .map(userAuthority -> new SimpleGrantedAuthority(userAuthority.getAuthority()))
+                .collect(Collectors.toSet());
+
         return new ApplicationUser(username, user.getPassword(),
-                Set.of(new SimpleGrantedAuthority("ROLE_ADMIN")),
+                userAuthorities,
                 true,
                 true,
                 true,

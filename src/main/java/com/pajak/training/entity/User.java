@@ -1,7 +1,6 @@
 package com.pajak.training.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,9 +28,17 @@ public class User {
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.EAGER)
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = {"user"})
     private Set<Address> addresses;
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"user"})
+    private Set<UserAuthority> authorities;
 
     public User() {
 
@@ -50,6 +57,15 @@ public class User {
         this.email = email;
         this.password = password;
         this.addresses = addresses;
+    }
+
+    public User(String name, Integer age, String email, String password, Set<Address> addresses, Set<UserAuthority> authorities) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.addresses = addresses;
+        this.authorities = authorities;
     }
 
     public User(String name, Integer age, String email) {
@@ -104,5 +120,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setAuthorities(Set<UserAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Set<UserAuthority> getAuthorities() {
+        return authorities;
     }
 }

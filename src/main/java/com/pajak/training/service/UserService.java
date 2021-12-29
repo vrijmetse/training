@@ -3,7 +3,9 @@ package com.pajak.training.service;
 import com.pajak.training.dto.UserRegistrationForm;
 import com.pajak.training.entity.Address;
 import com.pajak.training.entity.User;
+import com.pajak.training.entity.UserAuthority;
 import com.pajak.training.repository.AddressRepository;
+import com.pajak.training.repository.UserAuthorityRepository;
 import com.pajak.training.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,6 +26,8 @@ public class UserService {
 
     private AddressRepository addressRepository;
 
+    private UserAuthorityRepository userAuthorityRepository;
+
     private PasswordEncoder passwordEncoder;
 
     public UserService() {
@@ -32,10 +37,12 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository,
                        AddressRepository addressRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       UserAuthorityRepository userAuthorityRepository) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userAuthorityRepository = userAuthorityRepository;
     }
 
     public User getUserById(Long id) {
@@ -43,6 +50,7 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
+        Optional<Address> optionalAddress = addressRepository.findById(2L);
         return userRepository.findAll();
     }
 
@@ -60,6 +68,9 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        // no need to delete
+        // addressRepository.delete(id);
+        //  userAuthorityRepository.delete(id);
         userRepository.deleteById(id);
     }
 
@@ -79,10 +90,14 @@ public class UserService {
                 userRegistrationForm.getEmail(),
                 passwordEncoder.encode(userRegistrationForm.getPassword()),
                 Set.of(address));
-
         address.setUser(user);
-        userRepository.save(user); // di roll back kalau gagal save
-        addressRepository.save(address); // di roll back kalau gagal save
+
+        UserAuthority userAuthority = new UserAuthority(userRegistrationForm.getRoleName(), user);
+        user.setAuthorities(Set.of(userAuthority));
+
+        userRepository.save(user);
+        addressRepository.save(address);
+        userAuthorityRepository.save(userAuthority);
         return user;
     }
 

@@ -3,6 +3,8 @@ package com.pajak.training.controller;
 import com.pajak.training.dto.UserRegistrationForm;
 import com.pajak.training.entity.User;
 import com.pajak.training.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/user")
+@Api( tags = "User")
 public class UserController {
 
     Logger log = LoggerFactory.getLogger(UserController.class);
@@ -78,6 +81,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "This method is used to register new user.")
     @PostMapping(path = "/register")
     public ResponseEntity<User> registrationForm(@Valid @RequestBody UserRegistrationForm
                                                          userRegistrationForm) {
