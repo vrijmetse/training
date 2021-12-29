@@ -8,6 +8,7 @@ import com.pajak.training.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,17 +21,21 @@ public class UserService {
 
     private UserRepository userRepository;
 
-
     private AddressRepository addressRepository;
 
-    public UserService(){
+    private PasswordEncoder passwordEncoder;
+
+    public UserService() {
 
     }
 
     @Autowired
-    public UserService(UserRepository userRepository, AddressRepository addressRepository) {
+    public UserService(UserRepository userRepository,
+                       AddressRepository addressRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User getUserById(Long id) {
@@ -64,14 +69,18 @@ public class UserService {
 
     @Transactional(rollbackOn = Exception.class, value = Transactional.TxType.REQUIRED)
     public User registerV2(UserRegistrationForm userRegistrationForm) {
-        User user = new User(userRegistrationForm.getName(),
-                userRegistrationForm.getAge(),
-                userRegistrationForm.getEmail());
+
         Address address = new Address(userRegistrationForm.getStreetName(),
                 userRegistrationForm.getPostCode(),
                 userRegistrationForm.getRt(), userRegistrationForm.getRw());
+
+        User user = new User(userRegistrationForm.getName(),
+                userRegistrationForm.getAge(),
+                userRegistrationForm.getEmail(),
+                passwordEncoder.encode(userRegistrationForm.getPassword()),
+                Set.of(address));
+
         address.setUser(user);
-        user.setAddressList(Set.of(address));
         userRepository.save(user); // di roll back kalau gagal save
         addressRepository.save(address); // di roll back kalau gagal save
         return user;

@@ -23,6 +23,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -39,6 +42,14 @@ public class User {
         this.name = name;
         this.age = age;
         this.email = email;
+    }
+
+    public User(String name, Integer age, String email, String password, Set<Address> addresses) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.addresses = addresses;
     }
 
     public User(String name, Integer age, String email) {
@@ -85,5 +96,13 @@ public class User {
 
     public Set<Address> getAddresses() {
         return addresses;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

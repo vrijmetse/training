@@ -1,13 +1,11 @@
 package com.pajak.training.dto;
 
-import io.swagger.annotations.ApiModelProperty;
-
 public class UserRegistrationForm {
 
-    @ApiModelProperty(required = true)
     private String name;
     private Integer age;
     private String email;
+    private String password;
 
     private String streetName;
     private Integer postCode;
@@ -84,5 +82,13 @@ public class UserRegistrationForm {
 
     public void setRw(Integer rw) {
         this.rw = rw;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

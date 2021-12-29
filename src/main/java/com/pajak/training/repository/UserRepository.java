@@ -24,4 +24,6 @@ public interface UserRepository
 
     @Query(value = "select sum(u.age) from User u")
     Integer sumAgeForAllUserV2();
+
+    User findByName(String username);
 }
