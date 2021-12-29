@@ -7,7 +7,7 @@ CREATE TABLE laporan
     wajib_pajak_perorangan_id bigint NOT NULL,
     CONSTRAINT laporan_pkey PRIMARY KEY (id),
     CONSTRAINT fkxnmbdvaaop2moyr7b9rwsgdq FOREIGN KEY (wajib_pajak_perorangan_id)
-    REFERENCES public.wajib_pajak_perorangan (id) MATCH SIMPLE
+    REFERENCES wajib_pajak_perorangan (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
 )
