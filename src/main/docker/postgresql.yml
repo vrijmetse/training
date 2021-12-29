@@ -1,0 +1,11 @@
+version: '2'
+services:
+  app-postgresql:
+    image: postgres:12.3
+    environment:
+      - POSTGRES_USER=training
+      - POSTGRES_PASSWORD=training
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+    restart: always
