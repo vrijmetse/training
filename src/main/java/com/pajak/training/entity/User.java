@@ -1,12 +1,14 @@
 package com.pajak.training.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "training_user")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
     @Id
@@ -28,15 +30,13 @@ public class User {
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            orphanRemoval = true)
     @JsonIgnoreProperties(value = {"user"})
     private Set<Address> addresses;
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            orphanRemoval = true)
     @JsonIgnoreProperties(value = {"user"})
     private Set<UserAuthority> authorities;
 

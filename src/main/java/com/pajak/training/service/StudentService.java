@@ -10,7 +10,6 @@ import java.util.List;
 public class StudentService {
 
     public List<Student> getStudents() throws InterruptedException {
-        Thread.sleep(5000L); // mimic long-running process
         return Arrays.asList(
                 new Student(1, "James Bond"),
                 new Student(2, "Maria Jones"),

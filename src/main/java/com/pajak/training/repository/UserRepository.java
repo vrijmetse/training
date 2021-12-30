@@ -25,5 +25,10 @@ public interface UserRepository
     @Query(value = "select sum(u.age) from User u")
     Integer sumAgeForAllUserV2();
 
+    @Query(value = "select tu.id,tu.age, tu.email  from training_user as tu\n" +
+            "inner join address a on tu.id = a.user_id\n" +
+            "where tu.id = 8", nativeQuery = true)
+    Object[][] findByIdCustom(Long id);
+
     User findByName(String username);
 }

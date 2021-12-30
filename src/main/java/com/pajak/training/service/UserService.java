@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -46,11 +47,18 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return new User(id, "Alex", 23, "alex@gmail.com");
+        Object[][] result = userRepository.findByIdCustom(id);
+        BigInteger resultId = (BigInteger) result[0][0];
+        Integer resultAge = (Integer) result[0][1];
+        String resultEmail = (String) result[0][2];
+        User user = new User();
+        user.setId(resultId.longValue());
+        user.setAge(resultAge);
+        user.setEmail(resultEmail);
+        return user;
     }
 
     public List<User> getAllUsers() {
-        Optional<Address> optionalAddress = addressRepository.findById(2L);
         return userRepository.findAll();
     }
 

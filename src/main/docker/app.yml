@@ -4,9 +4,9 @@ services:
     image: pajak/training
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://app-postgresql:5432/training
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://app-postgresql:5432/training # first oder of importance
     ports:
-      - 8080:8080
+      - "80:80"
   app-postgresql:
     extends:
       file: postgresql.yml
