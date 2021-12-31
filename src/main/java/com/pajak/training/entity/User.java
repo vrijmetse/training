@@ -36,7 +36,7 @@ public class User {
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.EAGER)
+            orphanRemoval = true)
     @JsonIgnoreProperties(value = {"user"})
     private Set<UserAuthority> authorities;
 
